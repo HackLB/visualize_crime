@@ -40,7 +40,7 @@ map.on('load', function() {
 
         // Update slider to match dates ranges
         $('#slider').attr({
-           "max" : dates.length,
+           "max" : dates.length - 1,
            "min" : 0
         });
     

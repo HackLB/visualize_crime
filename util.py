@@ -18,7 +18,7 @@ def get_magnitude(data):
     if 'PETTY THEFT' in crime or 'VANDALISM' in crime:
         magnitude = 0.4
 
-    if 'ROBBERY; COMMERCIAL' in crime or 'GRAND THEFT' in crime or 'FRAUD' in crime or 'HIT AND RUN WITHOUT INJURY' in crime or 'UNAUTHORIZED USE' in crime:
+    if 'ROBBERY; COMMERCIAL' in crime or 'GRAND THEFT' in crime or 'FRAUD' in crime or 'HIT AND RUN WITHOUT INJURY' in crime or 'UNAUTHORIZED USE' in crime or 'FORGERY' in crime:
         magnitude = 0.6
 
     if 'ROBBERY; PERSON' in crime or 'BURGLARY' in crime or 'HIT AND RUN WITH INJURY' in crime:
