@@ -41,6 +41,7 @@ map.on('load', function() {
         // Update slider to match dates ranges
         $('#slider').attr({
            "max" : dates.length - 1,
+           "value" : dates.length - 1,
            "min" : 0
         });
     
@@ -51,32 +52,6 @@ map.on('load', function() {
             'data': data
         });
 
-        // // Create marker layer
-        // map.addLayer({
-        //     'id': 'crime-values',
-        //     'type': 'symbol',
-        //     'source': 'crimes',
-        //     'layout': {
-        //         'text-field': '{title}',
-        //         'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-        //         'text-size': 10,
-        //         'text-justify': 'left',
-        //         'text-anchor': 'left',
-        //         'text-offset': [1, 0],
-        //         'icon-image': 'police-15',
-        //         'icon-allow-overlap': true,
-        //         'icon-optional': true
-        //     },
-        //     'paint': {
-        //         'text-color': 'rgba(255,0,0,0.5)',
-        //         'icon-halo-color': 'rgba(0,0,0,0.5)',
-        //         'icon-halo-width': 8,
-        //         'icon-halo-blur': 8,
-        //         'text-halo-color': 'rgba(0,0,0,0.2)',
-        //         'text-halo-width': 2,
-        //         'text-halo-blur': 12,
-        //     }
-        // });
 
         map.addLayer({
             'id': 'crime-circles',
@@ -101,27 +76,9 @@ map.on('load', function() {
             }
         });
 
-        // // Create label layer
-        // map.addLayer({
-        //     'id': 'crime-labels',
-        //     'type': 'symbol',
-        //     'source': 'crimes',
-        //     'layout': {
-        //         'text-field': '  {title}',
-        //         'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-        //         'text-size': 10,
-        //         'text-justify': 'left',
-        //         'text-anchor': 'left',
-        //         'text-offset': [1, 0]
-            // },
-            // 'paint': {
-            //     'text-color': 'rgba(255,0,0,0.5)',
-            //     'fill-color': '#000000'
-            // }
-        // });
 
         // Initially, display crimes from the first date in the array
-        displayCrimesOn(dates[0]);
+        displayCrimesOn(dates[dates.length-2]);
 
         map.on('mousemove', function(e) {
             var features = map.queryRenderedFeatures(e.point, { layers: ['crime-circles'] });
