@@ -81,7 +81,7 @@ map.on('load', function() {
         // // 0 = January
         displayCrimesOn(dates[0]);
 
-        document.getElementById('slider').addEventListener('input', function(e) {
+        document.getElementById('slider').addEventListener('change', function(e) {
             // console.log(e.target.value);
             var crime_date = parseInt(e.target.value, 10);
             displayCrimesOn(dates[crime_date]);
