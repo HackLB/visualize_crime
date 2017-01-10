@@ -4,6 +4,8 @@ from pprint import pprint
 import simplejson as json
 import requests
 
+from util import get_magnitude
+
 
 if __name__ == "__main__":
     repo_path = os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -50,6 +52,7 @@ if __name__ == "__main__":
                 record['properties']['datetime'] = raw_record.get('date_occured')
                 record['properties']['day'] = record['properties']['datetime'][0:10]
                 record['properties']['description'] = str(raw_record.get('description', " ")).strip()
+                record['properties']['magnitude'] = get_magnitude(raw_record)
 
                 record['geometry']['coordinates'] = [raw_record.get('longitude'), raw_record.get('latitude')]
 
