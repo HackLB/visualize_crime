@@ -12,8 +12,9 @@ var dates = [];
 function displayCrimesOn(day) {
     // Display all crimes on the given day
     var filters = ['==', 'day', day];
-    map.setFilter('crime-values', filters);
-    map.setFilter('crime-labels', filters);
+    // map.setFilter('crime-values', filters);
+    map.setFilter('crime-circles', filters);
+    // map.setFilter('crime-labels', filters);
     updateLabel(day);
 }
 
@@ -50,47 +51,112 @@ map.on('load', function() {
             'data': data
         });
 
-        // Create marker layer
+        // // Create marker layer
+        // map.addLayer({
+        //     'id': 'crime-values',
+        //     'type': 'symbol',
+        //     'source': 'crimes',
+        //     'layout': {
+        //         'text-field': '{title}',
+        //         'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+        //         'text-size': 10,
+        //         'text-justify': 'left',
+        //         'text-anchor': 'left',
+        //         'text-offset': [1, 0],
+        //         'icon-image': 'police-15',
+        //         'icon-allow-overlap': true,
+        //         'icon-optional': true
+        //     },
+        //     'paint': {
+        //         'text-color': 'rgba(255,0,0,0.5)',
+        //         'icon-halo-color': 'rgba(0,0,0,0.5)',
+        //         'icon-halo-width': 8,
+        //         'icon-halo-blur': 8,
+        //         'text-halo-color': 'rgba(0,0,0,0.2)',
+        //         'text-halo-width': 2,
+        //         'text-halo-blur': 12,
+        //     }
+        // });
+
         map.addLayer({
-            'id': 'crime-values',
-            'type': 'symbol',
+            'id': 'crime-circles',
+            'type': 'circle',
             'source': 'crimes',
-            'layout': {
-                'icon-image': 'police-15',
-                'icon-allow-overlap': true
+            'paint': {
+                'circle-color': {
+                    property: 'magnitude',
+                    stops: [
+                        [0.0, '#FCA107'],
+                        [1.0, '#770000']
+                    ]
+                },
+                'circle-opacity': 0.6,
+                'circle-radius': {
+                    property: 'magnitude',
+                    stops: [
+                        [0.0, 7],
+                        [1.0, 30]
+                    ]
+                }
             }
         });
 
-        // Create label layer
-        map.addLayer({
-            'id': 'crime-labels',
-            'type': 'symbol',
-            'source': 'crimes',
-            'layout': {
-                'text-field': '  {title}',
-                'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-                'text-size': 10,
-                'text-justify': 'left',
-                'text-anchor': 'left',
-                'text-offset': [1, 0]
-            },
-            'paint': {
-                'text-color': 'rgba(255,0,0,0.5)'
-            }
-        });
+        // // Create label layer
+        // map.addLayer({
+        //     'id': 'crime-labels',
+        //     'type': 'symbol',
+        //     'source': 'crimes',
+        //     'layout': {
+        //         'text-field': '  {title}',
+        //         'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+        //         'text-size': 10,
+        //         'text-justify': 'left',
+        //         'text-anchor': 'left',
+        //         'text-offset': [1, 0]
+            // },
+            // 'paint': {
+            //     'text-color': 'rgba(255,0,0,0.5)',
+            //     'fill-color': '#000000'
+            // }
+        // });
 
         // Initially, display crimes from the first date in the array
         displayCrimesOn(dates[0]);
 
-        map.on('mousemove', function (e) {
-            var features = map.queryRenderedFeatures(e.point);
-            // document.getElementById('features').innerHTML = JSON.stringify(features, null, 2);
-            var feature_properties = features.map(function(x){
-                return x.properties;
-            });
+        map.on('mousemove', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['crime-circles'] });
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
 
-            console.log(feature_properties);
+            if (!features.length) {
+                popup.remove();
+                return;
+            }
+
+            var feature = features[0];
+
+            var popupText = '<strong>' + feature.properties.title + '</strong><br>';
+            popupText += '<small>' + feature.properties.datetime + '</small><br>';
+            popupText += '' + feature.properties.address + '';
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(feature.geometry.coordinates)
+                .setHTML(popupText)
+                .addTo(map);
         });
+
+
+        // Create a popup, but don't add it to the map yet.
+        var popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
+
+
+
+
+
 
         // When the live slider input event is fired,
         // update the slider display label to show the highlighted date  
