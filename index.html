@@ -17,9 +17,9 @@
 .map-overlay {
     font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     position: absolute;
-    width: 25%;
-    top: 0;
+    bottom: 0;
     left: 0;
+    right: 0;
     padding: 10px;
 }
 
@@ -57,7 +57,7 @@
 
 <div class='map-overlay top'>
     <div class='map-overlay-inner'>
-        <h2>Crimes by day:</h2>
+        <strong>Crimes by day:&nbsp;&nbsp;&nbsp;&nbsp;</strong>
         <label id='day'></label>
         <input id='slider' type='range' min='0' max='11' step='1' value='0' />
     </div>
