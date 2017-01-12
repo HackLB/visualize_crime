@@ -9,12 +9,10 @@ var map = new mapboxgl.Map({
 var crimes;
 var dates = [];
 
+
 function displayCrimesOn(day) {
-    // Display all crimes on the given day
     var filters = ['==', 'day', day];
-    // map.setFilter('crime-values', filters);
     map.setFilter('crime-circles', filters);
-    // map.setFilter('crime-labels', filters);
     updateLabel(day);
 }
 
@@ -25,7 +23,6 @@ function updateLabel(day) {
 
 map.on('load', function() {
 
-    // Load geojson and handle it
     d3.json('data.geojson', function(err, data) {
         if (err) throw err;
 
